@@ -1,0 +1,49 @@
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ConfirmDeleteModal from '../ui/ConfirmDeleteModal';
+
+const BookItem = ({ id, title, author, rating, pageCount, imageUrl, available, onDelete }) => {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleDeleteClick = () => {
+        setShowModal(true);
+    };
+
+    const handleCancel = () => {
+        setShowModal(false);
+    };
+
+    const handleConfirmDelete = () => {
+        setShowModal(false);
+        onDelete(id);
+    };
+
+    return (
+        <>
+            <Card className="mx-3 mb-4" style={{ width: '18rem' }}>
+                <Card.Img variant="top" src={imageUrl} />
+                <Card.Body>
+                    <Card.Title>{title}</Card.Title>
+                    <Card.Subtitle>{author}</Card.Subtitle>
+                    <div>
+                        <div>{rating} estrellas</div>
+                        <p>{pageCount} páginas</p>
+                        <p>{available ? "Disponible" : "Reservado"}</p>
+                    </div>
+                    <Button variant="danger" onClick={handleDeleteClick}>
+                        Eliminar
+                    </Button>
+                </Card.Body>
+            </Card>
+            <ConfirmDeleteModal
+                show={showModal}
+                onCancel={handleCancel}
+                onConfirm={handleConfirmDelete}
+                bookTitle={title}
+            />
+        </>
+    );
+};
+
+export default BookItem;
